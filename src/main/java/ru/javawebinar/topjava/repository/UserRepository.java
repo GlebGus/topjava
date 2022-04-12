@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface UserRepository {
     // null if not found, when updated
+
     User save(User user);
 
     // false if not found
@@ -18,4 +19,8 @@ public interface UserRepository {
     User getByEmail(String email);
 
     List<User> getAll();
+
+    default User getWithMeals(int id) {
+        throw new UnsupportedOperationException();
+    }
 }
