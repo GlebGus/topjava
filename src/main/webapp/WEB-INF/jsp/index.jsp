@@ -9,10 +9,12 @@
 <br>
 <section>
     <form method="post" action="users">
-        <spring:message code="app.login"/>: <select name="userId">
+        <spring:message code="app.login"/>: <label>
+        <select name="userId">
         <option value="100000" selected>User</option>
         <option value="100001">Admin</option>
     </select>
+    </label>
         <button type="submit"><spring:message code="common.select"/></button>
     </form>
 </section>

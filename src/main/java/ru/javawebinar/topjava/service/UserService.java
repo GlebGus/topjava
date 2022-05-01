@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
-
+import static ru.javawebinar.topjava.util.ValidationUtil.*;
 @Service
 public class UserService {
 
@@ -23,7 +24,7 @@ public class UserService {
 
     @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {
-        Assert.notNull(user, "user must not be null");
+       validate(user);
         return repository.save(user);
     }
 
@@ -48,7 +49,7 @@ public class UserService {
 
     @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
-        Assert.notNull(user, "user must not be null");
+       validate(user);
         checkNotFoundWithId(repository.save(user), user.id());
     }
 

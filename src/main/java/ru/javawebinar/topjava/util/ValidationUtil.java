@@ -3,10 +3,19 @@ package ru.javawebinar.topjava.util;
 
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
+import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.AbstractBaseEntity;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import java.util.Set;
+
+
 public class ValidationUtil {
+    public static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
     private ValidationUtil() {
     }
 
@@ -50,5 +59,16 @@ public class ValidationUtil {
     public static Throwable getRootCause(@NonNull Throwable t) {
         Throwable rootCause = NestedExceptionUtils.getRootCause(t);
         return rootCause != null ? rootCause : t;
+    }
+    public static <T> void validate(T object) {
+        Set<ConstraintViolation<T>> violations = VALIDATOR.validate(object);
+
+        if (violations.isEmpty()) {
+            for (ConstraintViolation<T> constraintViolation : violations) {
+                throw new ConstraintViolationException(constraintViolation.getMessage(), violations);
+            }
+
+        }
+        Assert.notNull(object, "meal must not be null");
     }
 }
