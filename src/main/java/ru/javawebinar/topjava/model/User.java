@@ -51,6 +51,10 @@ public class User extends AbstractNamedEntity {
     @NotNull
     private Date registered = new Date();
 
+    public void setRoles(Set<Role> roles) {
+        this.roles = EnumSet.copyOf(roles);
+    }
+
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
