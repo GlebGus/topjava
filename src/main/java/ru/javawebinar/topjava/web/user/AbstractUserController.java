@@ -53,4 +53,8 @@ public abstract class AbstractUserController {
         log.info("getWithMeals {}", id);
         return service.getWithMeals(id);
     }
+    public void switchEnabled(int id, boolean active){
+        log.info("switchEnabled {}",id);
+        service.switchEnabled(id,active);
+    }
 }
