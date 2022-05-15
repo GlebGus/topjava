@@ -1,14 +1,11 @@
 package ru.javawebinar.topjava.web.json;
 
 import org.junit.jupiter.api.Test;
-import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 
 import java.util.List;
 
-import static ru.javawebinar.topjava.MealTestData.MEAL_MATCHER;
-import static ru.javawebinar.topjava.MealTestData.adminMeal1;
-import static ru.javawebinar.topjava.MealTestData.meals;
+import static ru.javawebinar.topjava.MealTestData.*;
 
 class JsonUtilTest {
 
@@ -24,7 +21,7 @@ class JsonUtilTest {
     void readWriteValues() {
         String json = JsonUtil.writeValue(meals);
         System.out.println(json);
-        List<Meal> meals = JsonUtil.readValues(json, Meal.class);
-        MEAL_MATCHER.assertMatch(meals, MealTestData.meals);
+        List<Meal> actual = JsonUtil.readValues(json, Meal.class);
+        MEAL_MATCHER.assertMatch(actual, meals);
     }
 }
