@@ -34,7 +34,7 @@
               p:password="${database.password}"/>
     </beans>
 
-    <beans profile="postgres">
+    <beans profile="postgres, heroku">
         <!--
             For postgres driver logging
             It uses java.util.logging and logged via jul-to-slf4j bridge
