@@ -24,6 +24,13 @@
                 <button class="btn btn-success" type="submit">
                     <span class="fa fa-sign-in"></span>
                 </button>
+                <li class="dropdown">
+                    <a class="dropdown-toggle nav-link my-1 ml-2" data-toggle="dropdown">ru</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="login?language=en" >English</a>
+                        <a class="dropdown-item" href="login?language=ru">Русский</a>
+                    </div>
+                </li>
             </form:form>
         </sec:authorize>
     </div>

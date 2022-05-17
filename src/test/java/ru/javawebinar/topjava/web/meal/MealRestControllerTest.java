@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -115,12 +117,50 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(TO_MATCHER.contentJson(createTo(meal5, true), createTo(meal1, false)));
     }
-
+    @Test
+    void invalidatedUpdate()throws Exception{
+        Meal invalidateUpdate = getUpdateInvalidate();
+        perform(MockMvcRequestBuilders.put(REST_URL + MEAL1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
+                .content(JsonUtil.writeValue(invalidateUpdate)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void duplicatedUpdate() throws Exception{
+        Meal meal= meal1;
+        meal.setDateTime(meal2.getDateTime());
+        perform(MockMvcRequestBuilders.put(REST_URL+MEAL1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
+                .content(JsonUtil.writeValue(meal)))
+                .andExpect(status().isConflict());
+    }
+    @Test
+    void createInvalidatedWithLocation()throws Exception{
+Meal invalidateMeal = getNewInvalidate();
+perform(MockMvcRequestBuilders.post(REST_URL)
+        .contentType(MediaType.APPLICATION_JSON)
+        .with(userHttpBasic(user))
+        .content(JsonUtil.writeValue(invalidateMeal)))
+        .andExpect(status().isUnprocessableEntity());
+    }
     @Test
     void getBetweenAll() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "filter?startDate=&endTime=")
                 .with(userHttpBasic(user)))
                 .andExpect(status().isOk())
                 .andExpect(TO_MATCHER.contentJson(getTos(meals, user.getCaloriesPerDay())));
+    }
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void createDuplicatedWithLocation()throws Exception{
+        Meal meal = new Meal(null, meal1.getDateTime(),"Завтрак",500);
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
+                .content(JsonUtil.writeValue(meal)))
+                .andExpect(status().isConflict());
     }
 }

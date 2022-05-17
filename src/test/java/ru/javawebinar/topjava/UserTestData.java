@@ -50,6 +50,20 @@ public class UserTestData {
         updated.setRoles(Collections.singletonList(Role.ADMIN));
         return updated;
     }
+    public static User getNewInvalidated(){
+        return new User(null, "", "", "newPass", 1000,false,new Date(),Collections.singleton(Role.USER));
+
+    }
+    public static User getUpdatedInvalidated(){
+        User updated = new User(user);
+        updated.setEmail("");
+        updated.setName("");
+        updated.setCaloriesPerDay(10000);
+        updated.setPassword("");
+        updated.setEnabled(false);
+        updated.setRoles(Collections.singleton(Role.USER));
+        return updated;
+    }
 
     public static String jsonWithPassword(User user, String passw) {
         return JsonUtil.writeAdditionProps(user, "password", passw);
