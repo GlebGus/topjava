@@ -11,7 +11,6 @@ import ru.javawebinar.topjava.View;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -59,6 +58,7 @@ public class MealRestController extends AbstractMealController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
+    @Override
     @GetMapping("/filter")
     public List<MealTo> getBetween(
             @RequestParam @Nullable LocalDate startDate,

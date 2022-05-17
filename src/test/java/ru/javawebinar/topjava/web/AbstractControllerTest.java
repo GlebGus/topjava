@@ -46,7 +46,7 @@ public abstract class AbstractControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public Environment env;
+    private Environment env;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -54,7 +54,7 @@ public abstract class AbstractControllerTest {
     @Autowired
     protected MessageSourceAccessor messageSourceAccessor;
 
-    public void assumeDataJpa() {
+    protected void assumeDataJpa() {
         Assumptions.assumeTrue(env.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.DATAJPA)), "DATA-JPA only");
     }
 
@@ -75,11 +75,11 @@ public abstract class AbstractControllerTest {
         return messageSourceAccessor.getMessage(code, RU_LOCALE);
     }
 
-    public ResultMatcher errorType(ErrorType type) {
+    protected ResultMatcher errorType(ErrorType type) {
         return jsonPath("$.type").value(type.name());
     }
 
-    public ResultMatcher detailMessage(String code) {
+    protected ResultMatcher detailMessage(String code) {
         return jsonPath("$.details").value(getMessage(code));
     }
 }
